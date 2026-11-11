@@ -2,7 +2,7 @@
 
 本项目遵循 [语义化版本](https://semver.org/lang/zh-CN/)。版本号记录在 `.claude-plugin/plugin.json`。
 
-## [未发布]
+## [0.2.1] - 2026-11-11
 
 2026-11-11 模拟试跑（结论见 `TEST-RUN-2026-11-11.md`）测出的问题，修在 `SKILL.md` 里。
 
