@@ -29,7 +29,9 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 .\install.ps1 -Dir C:\custom\skills -Force
 ```
 
-试跑验收（`COMPATIBILITY.md` 里定义的检查清单）：说"这周五要交个方案"，回复里**必须**出现"我记下了"；在无文件能力的环境里试跑，AI 必须明说"没有地方长期保存"。
+装好后**通常不用重启**——本机实测目录一出现就被接管（"skill 不热重载"的说法在这个版本上不成立）。
+
+试跑验收见 `TESTING.md`（用场景剧本代替测试）：说"这周五要交个方案"，回复里**必须**出现"我记下了"、且日期换成年月日；无持久记忆的环境里必须明说"只能在这次对话里帮你盯着"。
 
 发版：改 `.claude-plugin/plugin.json` 的 `version`（semver），并在 `CHANGELOG.md` 顶部加一节。
 
@@ -52,15 +54,21 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 SKILL.md 要能原样塞进 Claude Code、桌面版、claude.ai、Codex、Cursor 等环境，因此以下五条是**改动 SKILL.md 时必须守住的不变量**（理由见 `COMPATIBILITY.md`）：
 
-1. frontmatter **只有** `name` + `description`——不加 `version` / `allowed-tools` / `model` 等，部分 harness 会报解析警告
-2. `description` 保持**中英双语**——Claude Code 走语义匹配，其他 harness 多为关键词/向量匹配
+1. frontmatter **只有** `name` + `description`——不加 `version` / `allowed-tools` / `model` 等，部分 harness 会报解析警告（codex 内置的 `review-agent` 用的正是这两个字段，可作佐证）
+2. `description` 保持**中英双语**，并写成**分层路由文案**——做什么 + 什么时候用 + 什么时候别用
 3. 正文**零工具名**——不出现 Read/Write/Bash，只说"记录/读取/写入文件"
-4. 只用**相对路径**，无脚本、无环境变量依赖
-5. **记忆降级规则**必须保留——无文件能力时退回会话内记忆，且禁止假装已持久化
+4. 不依赖绝对路径、脚本、环境变量
+5. **记忆降级规则**必须保留——有自带记忆就用，只有文件读写就落清单，都没有则退回会话内记忆，且禁止假装已持久化
 
-### 运行时产物
+### 记忆：借环境的，不落仓库
 
-skill 在运行时会在自己旁边生成 `work-companion.md`（工作记忆，一行一条承诺）。这是**用户个人数据**，已在 `.gitignore` 排除——不要提交，也不要把它挪进仓库。
+skill **不自建记忆文件**——它把承诺交给当前环境自带的记忆能力保存，只规定每条要带的五样要素（内容 / 记录日 / 到期日 / 状态 / 提醒历史），存储格式由环境决定。所以仓库里不会出现运行时的记忆产物。
+
+`.gitignore` 里仍保留 `work-companion.md` 的排除规则，是给"只有文件读写"的降级环境留的保险——那种环境会落成清单文件，别让它进仓库。
+
+### 写这条提示词时最容易犯的错
+
+**写出一条模型没有信号去执行的指令。** 已经栽过两次：「会话结束前主动说明」（模型感知不到会话何时结束）、「会话开始时读取记忆」（skill 靠触发加载，根本不存在"会话开始"这个时刻）。改 SKILL.md 时逐句自问：**这句话，它在当下有办法知道自己该动了吗？**
 
 ### 两个脚本层面的坑
 
@@ -69,10 +77,12 @@ skill 在运行时会在自己旁边生成 `work-companion.md`（工作记忆，
 
 ## 当前状态
 
-`v0.1.0`：**只有壳**。SKILL.md 目前是纯提示词指令，承诺的解析、到期判断、周度汇总全靠模型当场理解，没有任何自动化实现。`CHANGELOG.md` 的「待办」列着真正要做的内核：
+`v0.2.0`（在 `dev` 上，**尚未合并回 `main`**）。SKILL.md 已从"只有壳"推进到完整可用：记忆交由环境、触发面收窄、边界与增强路径齐备、五类动作全部到位。仍是纯提示词，没有代码。
 
-- 承诺解析、到期判断、周度汇总的自动化
-- 记忆文件的跨会话同步
-- codex / cursor 的路径验证（现为社区约定值，未实测）
+还欠的：
+
+- **行为走查**：`TESTING.md` 的 A–G 组剧本待人工跑，记忆 / 克制 / 情绪这几组尤其
+- **cursor 路径**从未验证（本机没装 cursor）；codex 只验了结构，没验加载
+- 记忆的跨机同步——当前版本明确不做，用户接受两台电脑各自失忆
 
 改完记得同步 `README.md` 的能力表与 `CHANGELOG.md`——这两处最容易和实现脱节。
