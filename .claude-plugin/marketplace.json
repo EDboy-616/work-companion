@@ -1,0 +1,15 @@
+{
+  "name": "work-companion-marketplace",
+  "owner": {
+    "name": "EDboy-616"
+  },
+  "version": "0.1.0",
+  "description": "Work Companion — 跨 harness 的秘书型工作伴侣 skill",
+  "plugins": [
+    {
+      "name": "work-companion",
+      "source": "./",
+      "description": "记录承诺、主动小结、时机提醒的秘书型工作伴侣"
+    }
+  ]
+}
