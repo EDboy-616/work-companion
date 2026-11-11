@@ -32,19 +32,29 @@
 ## 文件结构
 
 ```
-SKILL.md          # skill 主文件（安装时复制/链接到 Claude 的 skills 目录）
-work-companion.md # 运行时自动生成的工作记忆文件（承诺清单，勾选式）
+SKILL.md           # skill 主文件（跨 harness 通用）
+COMPATIBILITY.md   # 兼容性说明：各环境适配情况与安装检查清单
+work-companion.md  # 运行时自动生成的工作记忆文件（承诺清单，勾选式）
 ```
+
+## 跨 harness 兼容
+
+SKILL.md 的写法刻意做了平台中立：frontmatter 只有通用字段、正文零工具名引用、
+相对路径、无脚本依赖，并内置记忆降级规则（无文件能力的环境自动退回会话内记忆）。
+详见 [COMPATIBILITY.md](COMPATIBILITY.md)。
 
 ## 安装
 
-把 `SKILL.md` 复制到 Claude Code 的 skills 目录：
+**Claude Code（推荐）：**
 
 ```bash
 cp SKILL.md ~/.claude/skills/work-companion/SKILL.md
 ```
 
 重启 Claude Code 即生效。运行后会在 skill 同目录生成 `work-companion.md` 工作记忆文件。
+
+**其他 harness：** 按 [COMPATIBILITY.md](COMPATIBILITY.md) 的检查清单加载 SKILL.md 即可，
+无需修改内容。
 
 ## 隐私
 
