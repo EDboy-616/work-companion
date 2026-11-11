@@ -1,6 +1,10 @@
 # 降级环境可能落下的工作记忆清单（含个人数据，不入库）
 work-companion.md
 **/work-companion.md
+**/commitments.md
+
+# 本地工具产物
+.mimosa/
 
 # 系统文件
 .DS_Store
