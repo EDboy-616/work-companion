@@ -135,6 +135,7 @@ install.sh            # macOS / Linux 安装脚本
 install.ps1           # Windows 安装脚本
 COMPATIBILITY.md      # 兼容性说明：环境适配表与安装检查清单
 TESTING.md            # 试跑剧本（用场景代替测试）
+TEST-RUN-2026-11-12.md # 最近一轮试跑记录（含已知问题）
 CLAUDE.md             # 仓库指引（面向后续的开发实例）
 CHANGELOG.md
 ```
