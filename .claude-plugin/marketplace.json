@@ -3,7 +3,7 @@
   "owner": {
     "name": "EDboy-616"
   },
-  "version": "0.3.0",
+  "version": "0.3.1",
   "description": "Work Companion — 跨 harness 的承诺提醒 skill（轻量版）",
   "plugins": [
     {
