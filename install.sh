@@ -7,6 +7,7 @@
 #   ./install.sh --target all             安装到所有已识别的 harness
 #   ./install.sh --dir /custom/skills     安装到自定义目录
 #   ./install.sh --force                  目标已存在时覆盖
+#   ./install.sh --with-scripts           同时安装可选的清单脚本（默认不装）
 #
 # 远程一键（仓库需公开，或设置 GITHUB_TOKEN）：
 #   curl -fsSL https://raw.githubusercontent.com/EDboy-616/work-companion/main/install.sh | sh
@@ -19,6 +20,7 @@ SKILL_NAME="work-companion"
 
 TARGET="claude-code"
 FORCE=0
+WITH_SCRIPTS=0
 CUSTOM_DIR=""
 
 usage() {
@@ -29,6 +31,7 @@ Work Companion 安装脚本
   --target <name>   安装目标：claude-code（默认）| codex | cursor | all | dir
   --dir <路径>     改用自定义目录（等价于 --target dir）
   --force          目标已存在时覆盖
+  --with-scripts   同时安装可选的清单脚本（默认不装）
   -h, --help       显示帮助
 EOF
 }
@@ -38,6 +41,7 @@ while [ $# -gt 0 ]; do
     --target) TARGET="${2:-}"; [ -n "$TARGET" ] || { echo "缺少 --target 的值" >&2; exit 2; }; shift 2 ;;
     --dir)    CUSTOM_DIR="${2:-}"; [ -n "$CUSTOM_DIR" ] || { echo "缺少 --dir 的值" >&2; exit 2; }; TARGET="dir"; shift 2 ;;
     --force)  FORCE=1; shift ;;
+    --with-scripts) WITH_SCRIPTS=1; shift ;;
     -h|--help) usage; exit 0 ;;
     *) echo "未知参数：$1" >&2; usage; exit 2 ;;
   esac
@@ -50,8 +54,9 @@ if [ -f "$SCRIPT_DIR/skills/$SKILL_NAME/SKILL.md" ]; then
   SRC="$SCRIPT_DIR/skills/$SKILL_NAME/SKILL.md"
 fi
 
-download() {
-  url="https://raw.githubusercontent.com/$REPO/$BRANCH/skills/$SKILL_NAME/SKILL.md"
+download_raw() {
+  rel="$1"
+  url="https://raw.githubusercontent.com/$REPO/$BRANCH/$rel"
   if command -v curl >/dev/null 2>&1; then
     if [ -n "${GITHUB_TOKEN:-}" ]; then
       curl -fsSL -H "Authorization: Bearer $GITHUB_TOKEN" "$url"
@@ -62,7 +67,34 @@ download() {
     wget -qO- "$url"
   else
     echo "错误：需要 curl 或 wget 才能从远程下载" >&2
-    exit 3
+    return 3
+  fi
+}
+
+download() {
+  download_raw "skills/$SKILL_NAME/SKILL.md"
+}
+
+install_script() {
+  dest_dir="$1"
+  dest_script="$dest_dir/$SKILL_NAME/scripts/ledger.py"
+  local_script="$SCRIPT_DIR/skills/$SKILL_NAME/scripts/ledger.py"
+  mkdir -p "$(dirname "$dest_script")"
+  if [ -f "$local_script" ]; then
+    if cp "$local_script" "$dest_script"; then
+      echo "已安装（可选脚本）：$dest_script"
+      return 0
+    fi
+    echo "警告：可选脚本复制失败，SKILL.md 仍可独立工作" >&2
+    return 1
+  fi
+  tmp="$dest_script.tmp"
+  if download_raw "skills/$SKILL_NAME/scripts/ledger.py" > "$tmp" 2>/dev/null && mv "$tmp" "$dest_script"; then
+    echo "已安装（可选脚本）：$dest_script"
+  else
+    rm -f "$tmp"
+    echo "警告：可选脚本下载或落盘失败，SKILL.md 仍可独立工作" >&2
+    return 1
   fi
 }
 
@@ -83,6 +115,9 @@ install_one() {
 
   if [ -f "$dest/SKILL.md" ] && [ "$FORCE" -ne 1 ]; then
     echo "已存在，跳过：$dest/SKILL.md（加 --force 可覆盖）"
+    if [ "$WITH_SCRIPTS" -eq 1 ]; then
+      install_script "$dest_dir" || echo "警告：可选脚本安装失败，SKILL.md 未改动" >&2
+    fi
     return 0
   fi
 
@@ -93,6 +128,9 @@ install_one() {
     download > "$dest/SKILL.md"
   fi
   echo "已安装：$dest/SKILL.md"
+  if [ "$WITH_SCRIPTS" -eq 1 ]; then
+    install_script "$dest_dir" || echo "警告：可选脚本安装失败，SKILL.md 仍可独立工作" >&2
+  fi
 }
 
 case "$TARGET" in

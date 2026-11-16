@@ -2,9 +2,14 @@
 work-companion.md
 **/work-companion.md
 **/commitments.md
+**/commitments.md.lock
+**/commitments.md.tmp.*
+**/commitments.md.bak
 
 # 本地工具产物
 .mimosa/
+__pycache__/
+*.pyc
 
 # 系统文件
 .DS_Store
