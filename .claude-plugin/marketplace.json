@@ -3,13 +3,13 @@
   "owner": {
     "name": "EDboy-616"
   },
-  "version": "0.3.1",
-  "description": "Work Companion — 跨 harness 的承诺提醒 skill（轻量版）",
+  "version": "0.4.0",
+  "description": "Work Companion — 跨 harness 的承诺/任务/跟进提醒 skill（可选清单脚本）",
   "plugins": [
     {
       "name": "work-companion",
       "source": "./",
-      "description": "记住你答应过的事：当场落清单，收尾时顺带提一句该办的，不唠叨、不擅自定时"
+      "description": "记住你答应过的事、自己的任务和要盯的跟进：当场落清单，收尾时顺带提一句该办的，不唠叨、不擅自定时"
     }
   ]
 }
