@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512" role="img" aria-labelledby="wc-mono-title">
+  <title id="wc-mono-title">Work Companion mark, single colour</title>
+  <defs>
+    <mask id="cut">
+      <rect width="512" height="512" fill="#FFFFFF"/>
+      <path d="M209 250L243 284L303 217" fill="none" stroke="#000000" stroke-width="38" stroke-linecap="round" stroke-linejoin="round"/>
+    </mask>
+  </defs>
+
+  <path d="M166 190C166 158 187 140 218 140H294C325 140 346 158 346 190V378L256 322L166 378Z" fill="#161B26" mask="url(#cut)"/>
+  <circle cx="392" cy="122" r="21" fill="#161B26"/>
+</svg>

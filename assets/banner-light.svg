@@ -1,0 +1,69 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 360" width="1280" height="360" role="img" aria-label="Work Companion — the quiet commitment tracker for AI agents">
+  <defs>
+    <pattern id="dots" width="24" height="24" patternUnits="userSpaceOnUse">
+      <circle cx="2" cy="2" r="1.4" fill="#1B2130" fill-opacity="0.08"/>
+    </pattern>
+    <linearGradient id="tile" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#252E42"/>
+      <stop offset="1" stop-color="#10141D"/>
+    </linearGradient>
+    <linearGradient id="paper" x1="0" y1="0" x2="0.35" y2="1">
+      <stop offset="0" stop-color="#FFFDF6"/>
+      <stop offset="1" stop-color="#EDE7D7"/>
+    </linearGradient>
+    <linearGradient id="mint" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#43E3AC"/>
+      <stop offset="1" stop-color="#12A97B"/>
+    </linearGradient>
+    <filter id="card-shadow" x="-30%" y="-30%" width="160%" height="180%">
+      <feDropShadow dx="0" dy="10" stdDeviation="18" flood-color="#1B2130" flood-opacity="0.10"/>
+    </filter>
+  </defs>
+
+  <rect width="1280" height="360" fill="#F8F5ED"/>
+  <rect width="1280" height="360" fill="url(#dots)"/>
+  <circle cx="1070" cy="-30" r="230" fill="#17A97C" fill-opacity="0.06"/>
+
+  <!-- mark -->
+  <svg x="80" y="104" width="152" height="152" viewBox="0 0 512 512">
+    <rect width="512" height="512" rx="116" fill="url(#tile)"/>
+    <rect x="2" y="2" width="508" height="508" rx="114" fill="none" stroke="#46536E" stroke-opacity="0.45" stroke-width="4"/>
+    <path d="M166 190C166 158 187 140 218 140H294C325 140 346 158 346 190V378L256 322L166 378Z" fill="url(#paper)"/>
+    <path d="M209 250L243 284L303 217" fill="none" stroke="url(#mint)" stroke-width="34" stroke-linecap="round" stroke-linejoin="round"/>
+    <circle cx="392" cy="122" r="21" fill="#F2AB3C"/>
+  </svg>
+
+  <!-- wordmark -->
+  <text x="272" y="172" font-family="'Segoe UI','Microsoft YaHei','PingFang SC','Helvetica Neue',Arial,sans-serif" font-size="62" font-weight="700" letter-spacing="-1.6" fill="#161B26">Work Companion</text>
+  <text x="274" y="218" font-family="'Segoe UI','Microsoft YaHei','PingFang SC','Helvetica Neue',Arial,sans-serif" font-size="25" font-weight="400" fill="#5C6478">The quiet commitment tracker for AI agents</text>
+
+  <!-- pills -->
+  <g font-family="'Segoe UI','Microsoft YaHei','PingFang SC','Helvetica Neue',Arial,sans-serif" font-size="14" font-weight="600" fill="#4A5063">
+    <rect x="274" y="248" width="112" height="30" rx="15" fill="#FFFFFF" stroke="#E4DECF"/>
+    <text x="330" y="267.5" text-anchor="middle">prompt-only</text>
+    <rect x="396" y="248" width="118" height="30" rx="15" fill="#FFFFFF" stroke="#E4DECF"/>
+    <text x="455" y="267.5" text-anchor="middle">optional CLI</text>
+    <rect x="524" y="248" width="112" height="30" rx="15" fill="#FFFFFF" stroke="#E4DECF"/>
+    <text x="580" y="267.5" text-anchor="middle">stays local</text>
+  </g>
+
+  <!-- mini list card -->
+  <g>
+    <rect x="920" y="88" width="280" height="184" rx="18" fill="#FFFFFF" stroke="#EDE7D8" filter="url(#card-shadow)"/>
+    <circle cx="952" cy="120" r="7" fill="#17A97C"/>
+    <rect x="968" y="115" width="96" height="10" rx="5" fill="#E7E2D5"/>
+    <line x1="944" y1="142" x2="1176" y2="142" stroke="#F0EBDE" stroke-width="2"/>
+
+    <circle cx="952" cy="166" r="9" fill="#E3F6EE"/>
+    <path d="M948 166L951 169L957 162" fill="none" stroke="#17A97C" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+    <rect x="972" y="161" width="142" height="10" rx="5" fill="#E7E2D5"/>
+
+    <circle cx="952" cy="202" r="9" fill="#E3F6EE"/>
+    <path d="M948 202L951 205L957 198" fill="none" stroke="#17A97C" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+    <rect x="972" y="197" width="108" height="10" rx="5" fill="#E7E2D5"/>
+
+    <rect x="936" y="220" width="248" height="34" rx="10" fill="#FDF3E2"/>
+    <circle cx="952" cy="237" r="6" fill="#E8A33C"/>
+    <rect x="968" y="232" width="124" height="10" rx="5" fill="#E9D6B4"/>
+  </g>
+</svg>

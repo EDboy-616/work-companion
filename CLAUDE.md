@@ -10,7 +10,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 - **改核心能力**（记录什么、触发动作、状态、措辞、硬约束）→ 动 `SKILL.md`
 - **改可选增强**（清单查询/读写/校验 CLI）→ 动 `scripts/ledger.py`，并确认 SKILL.md 的无脚本路径仍成立
-- **改分发**（安装方式、插件元数据、文档）→ 动 `.claude-plugin/`、`install.sh`、`install.ps1`、根目录 md
+- **改分发**（安装方式、插件元数据、文档、品牌资产）→ 动 `.claude-plugin/`、`install.sh`、`install.ps1`、根目录 md、`assets/`
 
 ## 常用命令
 
@@ -20,7 +20,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ```bash
 ./install.sh                      # → ~/.claude/skills/work-companion/
-./install.sh --target all         # → claude-code / codex / cursor 全装
+./install.sh --target all         # 装到本机已存在的 harness（0.5.0 起）
 ./install.sh --dir /custom/skills # → 自定义目录
 ./install.sh --force              # 目标已存在时覆盖
 ./install.sh --with-scripts       # 连同可选脚本一起装
@@ -36,7 +36,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 试跑验收见 `TESTING.md`（用场景剧本代替测试）：说"这周五要交个方案"，回复里**必须**出现"我记下了"、且日期换成年月日；说"我要把报告写完"应记成任务，说"提醒我周三催他"应记成待跟进；无持久记忆的环境里必须明说"只能在这次对话里帮你盯着"。
 
-发版：改 `.claude-plugin/plugin.json` 与 `.claude-plugin/marketplace.json` 的 `version`（两处必须一致），并在 `CHANGELOG.md` 顶部加一节。
+发版：改 `.claude-plugin/plugin.json` 与 `.claude-plugin/marketplace.json` 的 `version`（两处必须一致），同步 `assets/badge-version.svg` 里的版本号与 `aria-label`，并在 `CHANGELOG.md` 顶部加一节。README 有两份（`README.md` 中文、`README.en.md` 英文），能力或分发方式改动必须两边一起改。
 
 ## 架构要点
 
@@ -110,6 +110,16 @@ SKILL.md 要能原样塞进 Claude Code、桌面版、claude.ai、Codex、Cursor
 - 本机 2026-11-16 实测：Git Bash 里裸 `python` 会命中 Windows Store 桩（退出码 49），要跑脚本得用 `"$LOCALAPPDATA/Programs/Python/Python314/python.exe"` 或 `py`。
 - 两个安装器都只有加 `--with-scripts` / `-WithScripts` 才装脚本；脚本失败必须只警告，不能让 SKILL.md 安装失败。
 
+### 品牌资产
+
+`assets/` 全部是自托管 SVG，不依赖 shields.io 等外部服务（公开仓库也能离线渲染）：
+
+- `logo.svg` 主标志、`logo-mark.svg` 透明底标记（浅色背景）、`logo-mark-mono.svg` 单色版（打印或反白）。三者共用同一套几何：墨色底 + 纸质书签 + 薄荷勾 + 琥珀点（"清单里唯一那条到期项"）
+- `banner-light.svg` / `banner-dark.svg`：README 顶部横幅，通过 `<picture>` + `prefers-color-scheme` 切换；改文案时两份一起改，坐标是对齐的
+- `badge-*.svg`：固定宽度、左标签右值、值前小圆点。SVG 不会自动排版，**改文字必须同时改 `width`、`viewBox`、`rect` 宽度与 `text` 的 `x`**，然后用浏览器按 1x 看一眼有没有压边
+- 语言切换用 `badge-zh.svg` / `badge-en.svg`（当前语言）配 `badge-<lang>-muted.svg`（另一种语言的可点击胶囊）
+- 许可证从 Private 改为 MIT 时，`badge-license.svg` 的值与宽度已同步收窄；以后换许可证别只改 README
+
 ## 当前状态
 
 **`v0.3.0`（2026-11-12）= 轻量版**，`plugin.json` 与 `marketplace.json` 已升到 0.3.0，`CHANGELOG.md` 顶部节标题已转正为 `[0.3.0]`。仍是纯提示词，没有代码（0.4.0 起才有可选脚本）。
@@ -126,7 +136,7 @@ SKILL.md 要能原样塞进 Claude Code、桌面版、claude.ai、Codex、Cursor
 
 - 仓库里**已无 `dev` 分支**（2026-11-13 复核：本地与远端都只剩 `main`）。`06b4e66`（v0.2.1）只活在历史里，别再按这句话去 `origin/dev` 找起点
 - 本机 `~/.claude/skills/work-companion/SKILL.md` 在 2026-11-13 与仓库版逐字节一致（当时值 `C0D490D4EEEBB332F31DEB0943C60C1FE70AB7B913F52023BD498396A3D7977C`，属 v0.3.1）。**v0.4.0 改完后该值已失效，需重装后重新比对**
-- **四份文档已于 2026-11-12 全部对齐轻量版**：`CHANGELOG.md` 顶部节标题转正为 `[0.3.0]`、内容重写为「轻量转向」（v0.3.0 草案的逐条记录不保留，只留指向 `8fb3048`/`74d3c1f`）；`README.md` 能力表收到四个动作、删三档表、隐私节改为"主目录固定清单、跨项目共用一份、跨机不同步"；`COMPATIBILITY.md` 删掉能力分档与增强表，改为"不做能力分档"的决策行 + 8 步安装检查清单；`TESTING.md` 剧本重剪。2026-11-16 又按 v0.4.0 同步了一轮（README/COMPATIBILITY/TESTING/CLAUDE + 两处 JSON + `.gitignore`）。**以后改 `SKILL.md`，这四份是第一顺位要跟着改的**——它们与实现脱节的代价，这两周已经付过一次
+- **四份文档已于 2026-11-12 全部对齐轻量版**：`CHANGELOG.md` 顶部节标题转正为 `[0.3.0]`、内容重写为「轻量转向」（v0.3.0 草案的逐条记录不保留，只留指向 `8fb3048`/`74d3c1f`）；`README.md` 能力表收到四个动作、删三档表、隐私节改为"主目录固定清单、跨项目共用一份、跨机不同步"；`COMPATIBILITY.md` 删掉能力分档与增强表，改为"不做能力分档"的决策行 + 8 步安装检查清单；`TESTING.md` 剧本重剪。2026-11-16 又按 v0.4.0 同步了一轮（README/COMPATIBILITY/TESTING/CLAUDE + 两处 JSON + `.gitignore`）；2026-11-17 在 0.5.0 基础上把 README 拆成中英双版，并加入 `assets/` 品牌资产。**以后改 `SKILL.md`，这几份（含 `README.en.md`）是第一顺位要跟着改的**——它们与实现脱节的代价，这两周已经付过一次
 
 **轻量版已过的验证**：2026-11-12 凌晨真实环境首验（结论只记在 `1173b96` 的提交信息里）验了清单真的落盘且五要素齐全、固定位置约定生效、日期歧义当场反问、定时唤起链路走通；同日另跑了一轮**模拟走查**（`TEST-RUN-2026-11-12.md`，7 个会话，2 个无产出），验了记录五字段、日期换算、落点、先读再写、降级口径与收尾那句。
 
@@ -143,4 +153,4 @@ SKILL.md 要能原样塞进 Claude Code、桌面版、claude.ai、Codex、Cursor
 - **cursor 路径**从未验证（本机没装 cursor）；codex 只验了结构，没验加载
 - 记忆的跨机同步：明确不做，用户接受两台电脑各自失忆。**但"跨项目读不到"这一层随轻量版已经解除**——清单落在与项目无关的主目录固定位置，不再按项目分。旧文档里"记忆按项目分（`~/.claude/projects/<项目路径>/memory/`）、换个项目文件夹就看不见"的说法**已作废**，同步文档时别照抄回来
 
-改完记得同步 `README.md` 的能力表、`COMPATIBILITY.md`、`TESTING.md` 与 `CHANGELOG.md`——这几处最容易和实现脱节；版本号要同时改 `plugin.json` 与 `marketplace.json`。
+改完记得同步 `README.md` 与 `README.en.md` 的能力表、`COMPATIBILITY.md`、`TESTING.md` 与 `CHANGELOG.md`——这几处最容易和实现脱节；版本号要同时改 `plugin.json`、`marketplace.json` 与 `assets/badge-version.svg`。

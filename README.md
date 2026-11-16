@@ -1,13 +1,28 @@
-# Work Companion · 工作伴侣
+<p align="center">
+  <picture>
+    <source media="(prefers-color-scheme: dark)" srcset="assets/banner-dark.svg">
+    <img src="assets/banner-light.svg" alt="Work Companion — the quiet commitment tracker for AI agents" width="100%">
+  </picture>
+</p>
+
+<p align="center">
+  <a href="README.en.md" title="Read in English"><img src="assets/badge-en-muted.svg" alt="English" height="26"></a>
+  <img src="assets/badge-zh.svg" alt="简体中文（当前语言）" height="26">
+</p>
+
+<p align="center">
+  <a href="CHANGELOG.md"><img src="assets/badge-version.svg" alt="version v0.5.0" height="26"></a>
+  <img src="assets/badge-core.svg" alt="core: prompt-only" height="26">
+  <img src="assets/badge-harness.svg" alt="harness: Agent Skills, 19 install targets" height="26">
+  <br>
+  <a href="LICENSE"><img src="assets/badge-license.svg" alt="license: MIT" height="26"></a>
+  <img src="assets/badge-scripts.svg" alt="scripts: optional · Python 3" height="26">
+  <img src="assets/badge-privacy.svg" alt="data stays on your machine" height="26">
+</p>
 
 > 一个 Agent Skill：**别让你答应过的事被忘掉。**
 > 记下你亲口说的承诺、自己的任务，和你明确要求盯的跟进；你问起时列全，你说收工时顺带提一句。
 > 不催、不打断、不替你规划、不擅自定时。
-
-[![Agent Skills](https://img.shields.io/badge/Agent%20Skills-compatible-2f6b4f)](https://agentskills.io)
-[![License: MIT](https://img.shields.io/badge/License-MIT-c4572e.svg)](LICENSE)
-[![Harness](https://img.shields.io/badge/harness-Claude%20Code%20%C2%B7%20Codex%20%C2%B7%20Cursor%20%C2%B7%2080%2B-1e1b18)](#装到你的-agent-里)
-[![Version](https://img.shields.io/badge/version-0.5.0-7c7168)](CHANGELOG.md)
 
 它是一段**纯提示词**——一份 `SKILL.md`，装进任何支持 [Agent Skills 规范](https://agentskills.io/specification) 的 agent 就能用。没有服务端、不联网、不收集任何数据。
 
@@ -41,12 +56,10 @@ Work Companion 补的就是这一块：**把"我答应过要办的事"从对话�
 
 ## 四个动作
 
-| 动作 | 什么时候发生 |
-|---|---|
-| **当场记下** | 你亲口说出承诺、自己的任务，或明确要求盯着某个跟进时。**只有这一轮真的写进清单了**，它才说"我记下了" |
-| **被问就列全** | 你说"我有什么没做的"。分「你要做的」（未完成＋待跟进）、「等对方」（等待对方），段内按到期日；作废的不列，删掉的连提都不提 |
-| **收尾顺带一句** | 你说出明确收尾词（`先这样`／`收工`／`就这样`／`今天到这`／`先到这`／`没别的了`）且清单里有逾期／今天／三天内到期的条目。一次最多一句，**一句只装一条** |
-| **定时唤起** | **仅在你明确要求时**。只说了哪天没说几点，它会先问一次具体时刻；问了不答就先记下、不挂。挂不上就直说 |
+- **当场记下**——你亲口说出承诺、自己的任务，或明确要求盯着某个跟进时。**只有这一轮真的写进清单了**，它才说"我记下了"。
+- **被问就列全**——你说"我有什么没做的"。分「你要做的」（未完成＋待跟进）、「等对方」（等待对方），段内按到期日；作废的不列，删掉的连提都不提。
+- **收尾顺带一句**——你说出明确收尾词（`先这样`／`收工`／`就这样`／`今天到这`／`先到这`／`没别的了`）且清单里有逾期／今天／三天内到期的条目。一次最多一句，**一句只装一条**。
+- **定时唤起**——**仅在你明确要求时**。只说了哪天没说几点，它会先问一次具体时刻；问了不答就先记下、不挂。挂不上就直说。
 
 每条记录五个字段：**内容（原话）／记录日／到期日／状态／提醒历史**。状态五种：**未完成／已完成／已作废／等待对方／待跟进**。
 
@@ -82,7 +95,7 @@ git clone https://github.com/EDboy-616/work-companion.git; cd work-companion; .\
 
 ```bash
 ./install.sh --target codex      # 指定 harness
-./install.sh --target all        # 已识别的都装
+./install.sh --target all        # 装到本机已存在的 harness
 ./install.sh --dir ~/my/skills   # 自定义目录
 ./install.sh --force             # 覆盖已存在的版本
 ./install.sh --with-scripts      # 连同可选的清单脚本一起装
@@ -195,12 +208,14 @@ Agent Skills 是 Anthropic 于 2025-12 开源的标准（规范见 [agentskills.
 ## 仓库结构
 
 ```
+assets/                  # 品牌资产：自托管 SVG（logo / 明暗横幅 / 徽章）
 skills/work-companion/
 ├─ SKILL.md              # ★ 核心：唯一真相源
 ├─ test-prompts.json     # 评测样例（不会被安装）
 └─ scripts/ledger.py     # 可选清单 CLI
 .claude-plugin/          # 插件与 marketplace 清单
 install.sh / install.ps1 # 一键安装脚本
+README.md / README.en.md # 中文 / English
 ```
 
 研发文档（保留在仓库里，方便追溯每一条规则是怎么来的）：
@@ -218,3 +233,5 @@ install.sh / install.ps1 # 一键安装脚本
 [MIT](LICENSE) © 2026 EDboy-616
 
 随意使用、修改、分发、商用，保留版权声明即可。
+
+<p align="center"><sub><a href="README.en.md">English</a> · 简体中文</sub></p>

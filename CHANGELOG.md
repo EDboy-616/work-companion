@@ -2,6 +2,15 @@
 
 本项目遵循 [语义化版本](https://semver.org/lang/zh-CN/)。版本号同时记录在 `.claude-plugin/plugin.json` 与 `.claude-plugin/marketplace.json`。
 
+## [Unreleased]
+
+### 文档与品牌
+
+- **README 拆成中英双版**：`README.md`（简体中文）与 `README.en.md`（English）在 0.5.0 内容上对齐，顶部用语言胶囊互跳；README 徽章从 shields.io 换成自托管 SVG，不再依赖外部服务。英文版注明 `SKILL.md` 正文与收尾词白名单目前为中文，研发文档暂只有中文。
+- **新增 `assets/` 品牌资产（15 个 SVG）**：主标志及透明底/单色变体、浅色/深色横幅（`<picture>` + `prefers-color-scheme` 自动切换）、6 个能力徽章与 4 个语言胶囊。许可证徽章随 0.5.0 的 MIT 同步。
+- **`CLAUDE.md`** 补充品牌资产维护规则、发版时同步版本徽章、两份 README 必须一起改；顺手修正 `--target all` 的过时注释。
+- 本提交不改 `SKILL.md`、安装器行为与版本号。
+
 ## [0.5.0] - 2026-11-16
 
 **仓库公开化：加 MIT 许可证，README 重写为面向公众的版本，安装器从 3 个 harness 扩到 19 个。** `SKILL.md` **一行未动**——这一版只改分发与文档。

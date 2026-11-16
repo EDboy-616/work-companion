@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="246" height="26" viewBox="0 0 246 26" role="img" aria-label="harness Agent Skills, 19 install targets">
+  <defs><clipPath id="c"><rect width="246" height="26" rx="7"/></clipPath></defs>
+  <g clip-path="url(#c)">
+    <rect width="70" height="26" fill="#1D2433"/>
+    <rect x="70" width="176" height="26" fill="#F6F3EA"/>
+  </g>
+  <text x="35" y="17.6" text-anchor="middle" font-family="'Segoe UI','Microsoft YaHei','PingFang SC','Helvetica Neue',Arial,sans-serif" font-size="12.5" font-weight="600" fill="#C3CDE0">harness</text>
+  <circle cx="84" cy="13" r="3.6" fill="#17A97C"/>
+  <text x="94" y="17.6" font-family="'Segoe UI','Microsoft YaHei','PingFang SC','Helvetica Neue',Arial,sans-serif" font-size="12.5" font-weight="600" fill="#1B2130">Agent Skills · 19 targets</text>
+</svg>
