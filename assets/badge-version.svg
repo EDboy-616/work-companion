@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="144" height="26" viewBox="0 0 144 26" role="img" aria-label="version v0.5.0">
+  <defs><clipPath id="c"><rect width="144" height="26" rx="7"/></clipPath></defs>
+  <g clip-path="url(#c)">
+    <rect width="66" height="26" fill="#1D2433"/>
+    <rect x="66" width="78" height="26" fill="#F6F3EA"/>
+  </g>
+  <text x="33" y="17.6" text-anchor="middle" font-family="'Segoe UI','Microsoft YaHei','PingFang SC','Helvetica Neue',Arial,sans-serif" font-size="12.5" font-weight="600" fill="#C3CDE0">version</text>
+  <circle cx="80" cy="13" r="3.6" fill="#E8A33C"/>
+  <text x="90" y="17.6" font-family="'Segoe UI','Microsoft YaHei','PingFang SC','Helvetica Neue',Arial,sans-serif" font-size="12.5" font-weight="600" fill="#1B2130">v0.5.0</text>
+</svg>

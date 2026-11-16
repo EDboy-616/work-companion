@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="132" height="26" viewBox="0 0 132 26" role="img" aria-label="license MIT">
+  <defs><clipPath id="c"><rect width="132" height="26" rx="7"/></clipPath></defs>
+  <g clip-path="url(#c)">
+    <rect width="66" height="26" fill="#1D2433"/>
+    <rect x="66" width="66" height="26" fill="#F6F3EA"/>
+  </g>
+  <text x="33" y="17.6" text-anchor="middle" font-family="'Segoe UI','Microsoft YaHei','PingFang SC','Helvetica Neue',Arial,sans-serif" font-size="12.5" font-weight="600" fill="#C3CDE0">license</text>
+  <circle cx="80" cy="13" r="3.6" fill="#17A97C"/>
+  <text x="90" y="17.6" font-family="'Segoe UI','Microsoft YaHei','PingFang SC','Helvetica Neue',Arial,sans-serif" font-size="12.5" font-weight="600" fill="#1B2130">MIT</text>
+</svg>
