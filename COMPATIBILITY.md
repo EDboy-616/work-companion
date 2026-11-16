@@ -30,11 +30,21 @@
 
 | 环境 | 安装方式 | 能否落盘 | 定时提醒 | 备注 |
 |------|---------|---------|---------|------|
-| Claude Code（CLI / 桌面版） | `./install.sh` → `~/.claude/skills/` | ✅ 可写文件 | 取决于会话是否有定时工具；用户要求时才试 | 本机已实测安装，与仓库版逐字节一致。清单**尚未**在本机 `~/.claude` 下产生过产物可复核 |
-| Codex | `./install.sh --target codex` → `~/.codex/skills/` | 未实测 | 未知 | **只验过目录结构**（与 codex 自带 skill 布局一致），没验加载 |
-| Cursor | `./install.sh --target cursor` → `~/.cursor/skills/` | 未知 | 未知 | 路径为社区约定值，**从未验证**（本机未安装 cursor） |
+| Claude Code（CLI / 桌面版） | `./install.sh` → `~/.claude/skills/` | ✅ 可写文件 | 取决于会话是否有定时工具；用户要求时才试 | **本机已实测**：安装后逐字节一致，七轮验收全过（见 `TEST-RUN-2026-11-16-darwin.md`） |
+| Codex | `./install.sh --target codex` → `~/.codex/skills/` | 未实测 | 未知 | 目录已装，**没验加载**。官方文档口径为 `~/.codex/skills/`，新版也认 `~/.agents/skills/` |
+| Cursor | `--target cursor` → `~/.cursor/skills/` | 未知 | 未知 | 路径来自 Cursor 官方 skills 文档；本机未装 cursor，**未验** |
+| Gemini CLI | `--target gemini` → `~/.gemini/skills/` | 未知 | 未知 | 项目级用 `.agents/skills/` |
+| OpenCode | `--target opencode` → `~/.config/opencode/skills/` | 未知 | 未知 | |
+| GitHub Copilot | `--target copilot` → `~/.copilot/skills/` | 未知 | 未知 | |
+| 通义灵码 / Lingma | `--target lingma` → `~/.lingma/skills/` | 未知 | 未知 | 国内，官方文档有 Skills 章节 |
+| Qoder / Qoder CN | `--target qoder` / `qoder-cn` | 未知 | 未知 | 国内 |
+| 腾讯 CodeBuddy | `--target codebuddy` → `~/.codebuddy/skills/` | 未知 | 未知 | 国内，首个支持 Skills 的国产 CLI |
+| Trae / Trae CN | `--target trae` / `trae-cn` | 未知 | 未知 | 国内，字节 |
+| Qwen Code / iFlow / MiniMax Code | `--target qwen` / `iflow` / `minimax` | 未知 | 未知 | 国内 |
 | claude.ai（网页） | 上传 SKILL.md 作为 skill | ❌ 沙箱临时 | ❌ | 按 §八降级：只在这次对话里盯着，并明说没存下来 |
-| 其他 agent harness | 按其 skill 规范加载 SKILL.md | 取决于该环境 | 取决于该环境 | 指令本身无平台依赖 |
+| 其他 skills-compatible agent | 按其 skill 规范加载 SKILL.md | 取决于该环境 | 取决于该环境 | 指令本身无平台依赖；[支持列表](https://github.com/vercel-labs/skills/blob/main/docs/agents.md) 已列 80+ |
+
+> **诚实说明**：除 Claude Code 外，上表路径来自各 agent 官方文档与 vercel-labs/skills 的支持列表，本仓库**没有逐个实测加载**。装好后的通用判据是：目录一出现，该 agent 的「设置 → 技能」里能列出 `work-companion`。列出即生效；列不出就是路径不对，请开 issue。
 
 可选脚本 `scripts/ledger.py` 需要 Python 3；不装或跑不起来时，按文本路径办，行为不变。
 

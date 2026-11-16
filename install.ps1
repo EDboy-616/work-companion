@@ -3,7 +3,11 @@
 # Usage:
 #   .\install.ps1                           Install to $HOME\.claude\skills\work-companion
 #   .\install.ps1 -Target codex             Install to $HOME\.codex\skills\work-companion
-#   .\install.ps1 -Target all               Install to every recognized harness
+#   .\install.ps1 -Target all               Install to every harness present on this machine
+#   .\install.ps1 -Target codebuddy         China harnesses: lingma|qoder|qoder-cn|codebuddy|
+#                                           trae|trae-cn|qwen|iflow|minimax
+#   .\install.ps1 -Target gemini            Others: gemini|opencode|copilot|windsurf|agents|
+#                                           kiro|openclaw
 #   .\install.ps1 -Dir C:\custom\skills     Install to a custom skills directory
 #   .\install.ps1 -Force                    Overwrite when the target exists
 #   .\install.ps1 -WithScripts              Also install the optional ledger script
@@ -16,7 +20,10 @@
 
 [CmdletBinding()]
 param(
-    [ValidateSet('claude-code', 'codex', 'cursor', 'all', 'dir')]
+    [ValidateSet(
+        'claude-code','codex','cursor','gemini','opencode','copilot','windsurf','agents','kiro','openclaw',
+        'lingma','qoder','qoder-cn','codebuddy','trae','trae-cn','qwen','iflow','minimax',
+        'all','dir')]
     [string]$Target = 'claude-code',
     [string]$Dir = '',
     [switch]$Force,
@@ -37,12 +44,54 @@ $LocalSrc  = Join-Path $ScriptDir "skills\$SkillName\SKILL.md"
 
 function Get-SkillsDir([string]$name) {
     switch ($name) {
+        # International
         'claude-code' { Join-Path $HOME '.claude\skills' }
         'codex'       { Join-Path $HOME '.codex\skills' }
         'cursor'      { Join-Path $HOME '.cursor\skills' }
+        'gemini'      { Join-Path $HOME '.gemini\skills' }
+        'opencode'    { Join-Path $HOME '.config\opencode\skills' }
+        'copilot'     { Join-Path $HOME '.copilot\skills' }
+        'windsurf'    { Join-Path $HOME '.codeium\windsurf\skills' }
+        'agents'      { Join-Path $HOME '.agents\skills' }
+        'kiro'        { Join-Path $HOME '.kiro\skills' }
+        'openclaw'    { Join-Path $HOME '.openclaw\skills' }
+        # China
+        'lingma'      { Join-Path $HOME '.lingma\skills' }
+        'qoder'       { Join-Path $HOME '.qoder\skills' }
+        'qoder-cn'    { Join-Path $HOME '.qoder-cn\skills' }
+        'codebuddy'   { Join-Path $HOME '.codebuddy\skills' }
+        'trae'        { Join-Path $HOME '.trae\skills' }
+        'trae-cn'     { Join-Path $HOME '.trae-cn\skills' }
+        'qwen'        { Join-Path $HOME '.qwen\skills' }
+        'iflow'       { Join-Path $HOME '.iflow\skills' }
+        'minimax'     { Join-Path $HOME '.minimax\skills' }
         'dir'         { $Dir }
         default       { '' }
     }
+}
+
+$AllTargets = @(
+    'claude-code','codex','cursor','gemini','opencode','copilot','windsurf','agents','kiro','openclaw',
+    'lingma','qoder','qoder-cn','codebuddy','trae','trae-cn','qwen','iflow','minimax'
+)
+
+function Install-Detected {
+    $count = 0
+    foreach ($t in $AllTargets) {
+        $d = Get-SkillsDir $t
+        $parent = Split-Path -Parent $d
+        if (Test-Path $parent) {
+            Write-Host "-> $t"
+            Install-One $t
+            $count++
+        }
+    }
+    if ($count -eq 0) {
+        Write-Host "No known harness directory detected; nothing installed."
+        Write-Host "Use -Target <name> or -Dir <path> to choose a location."
+        exit 1
+    }
+    Write-Host "Installed to $count harness(es)."
 }
 
 function Get-RemoteContent([string]$relativePath) {
@@ -102,9 +151,7 @@ function Install-One([string]$targetName) {
 }
 
 if ($Target -eq 'all') {
-    Install-One 'claude-code'
-    Install-One 'codex'
-    Install-One 'cursor'
+    Install-Detected
 } else {
     Install-One $Target
 }

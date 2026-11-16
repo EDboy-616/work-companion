@@ -28,7 +28,13 @@ usage() {
 Work Companion 安装脚本
 
 选项：
-  --target <name>   安装目标：claude-code（默认）| codex | cursor | all | dir
+  --target <name>   安装目标，默认 claude-code。可选：
+                      国际 claude-code | codex | cursor | gemini | opencode |
+                           copilot | windsurf | agents | kiro | openclaw
+                      国内 lingma | qoder | qoder-cn | codebuddy | trae | trae-cn |
+                           qwen | iflow | minimax
+                      all = 只装到本机确实存在的那些
+                      dir = 配合 --dir 使用
   --dir <路径>     改用自定义目录（等价于 --target dir）
   --force          目标已存在时覆盖
   --with-scripts   同时安装可选的清单脚本（默认不装）
@@ -100,12 +106,52 @@ install_script() {
 
 skills_dir_for() {
   case "$1" in
+    # 国际
     claude-code) echo "$HOME/.claude/skills" ;;
     codex)       echo "$HOME/.codex/skills" ;;
     cursor)      echo "$HOME/.cursor/skills" ;;
+    gemini)      echo "$HOME/.gemini/skills" ;;
+    opencode)    echo "$HOME/.config/opencode/skills" ;;
+    copilot)     echo "$HOME/.copilot/skills" ;;
+    windsurf)    echo "$HOME/.codeium/windsurf/skills" ;;
+    agents)      echo "$HOME/.agents/skills" ;;
+    kiro)        echo "$HOME/.kiro/skills" ;;
+    openclaw)    echo "$HOME/.openclaw/skills" ;;
+    # 国内
+    lingma)      echo "$HOME/.lingma/skills" ;;
+    qoder)       echo "$HOME/.qoder/skills" ;;
+    qoder-cn)    echo "$HOME/.qoder-cn/skills" ;;
+    codebuddy)   echo "$HOME/.codebuddy/skills" ;;
+    trae)        echo "$HOME/.trae/skills" ;;
+    trae-cn)     echo "$HOME/.trae-cn/skills" ;;
+    qwen)        echo "$HOME/.qwen/skills" ;;
+    iflow)       echo "$HOME/.iflow/skills" ;;
+    minimax)     echo "$HOME/.minimax/skills" ;;
     dir)         echo "$CUSTOM_DIR" ;;
     *)           echo "" ;;
   esac
+}
+
+# --target all：只装到本机确实存在的 harness（父目录存在才算）
+ALL_TARGETS="claude-code codex cursor gemini opencode copilot windsurf agents kiro openclaw lingma qoder qoder-cn codebuddy trae trae-cn qwen iflow minimax"
+
+install_detected() {
+  installed=0
+  for t in $ALL_TARGETS; do
+    d=$(skills_dir_for "$t")
+    parent=$(dirname "$d")
+    if [ -d "$parent" ]; then
+      echo "→ $t"
+      install_one "$d"
+      installed=$((installed + 1))
+    fi
+  done
+  if [ "$installed" -eq 0 ]; then
+    echo "没有检测到任何已知 harness 目录，什么都没装。" >&2
+    echo "用 --target <name> 指定，或 --dir <路径> 手动指定目录。" >&2
+    return 1
+  fi
+  echo "共安装到 $installed 个 harness。"
 }
 
 install_one() {
@@ -134,15 +180,12 @@ install_one() {
 }
 
 case "$TARGET" in
-  all)
-    install_one "$HOME/.claude/skills"
-    install_one "$HOME/.codex/skills"
-    install_one "$HOME/.cursor/skills"
-    ;;
+  all) install_detected ;;
   *)
     dir=$(skills_dir_for "$TARGET")
     if [ -z "$dir" ]; then
-      echo "未知目标：$TARGET（可用：claude-code | codex | cursor | all | dir）" >&2
+      echo "未知目标：$TARGET" >&2
+      echo "可用：$ALL_TARGETS | all | dir" >&2
       exit 2
     fi
     install_one "$dir"

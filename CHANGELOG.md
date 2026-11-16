@@ -2,6 +2,31 @@
 
 本项目遵循 [语义化版本](https://semver.org/lang/zh-CN/)。版本号同时记录在 `.claude-plugin/plugin.json` 与 `.claude-plugin/marketplace.json`。
 
+## [0.5.0] - 2026-11-16
+
+**仓库公开化：加 MIT 许可证，README 重写为面向公众的版本，安装器从 3 个 harness 扩到 19 个。** `SKILL.md` **一行未动**——这一版只改分发与文档。
+
+### 起因
+
+仓库从私有转为公开，但 README 还写着"仓库当前为**私有**"、License 一栏是"Private / personal use"，GitHub 上也确实没有许可证文件（`licenseInfo: null`）。没有许可证的公开仓库，别人默认无权复用——这和"开放大家下载"的意图直接矛盾。同时安装器只认 `claude-code` / `codex` / `cursor` 三个目标，与"国内外 agent 都能装"的目标不符。
+
+### 变更
+
+- **新增 `LICENSE`**：MIT，Copyright (c) 2026 EDboy-616。
+- **README 重写**：去掉所有"私有"表述；加 Agent Skills / MIT / harness / 版本四个徽章；新增「它刻意不做什么」表（把删掉的四类主动动作连同原因写清，避免被当成功能缺失）；安装方式重排为「npx 一条命令 → 本仓库脚本 → Claude Code 插件市场 → 手动复制」，手动复制给出**国际 12 个 + 国内 10 个** agent 的全局路径表；新增「这算不算 skill」小节，正面回答它符合 [Agent Skills 规范](https://agentskills.io/specification)；新增「参与」小节（Discussion / Issue / 改代码的循环）；研发文档改为带说明的表格，标明它们为什么留在仓库里。
+- **`install.sh` / `install.ps1` 扩到 19 个目标**：国际 `claude-code codex cursor gemini opencode copilot windsurf agents kiro openclaw`，国内 `lingma qoder qoder-cn codebuddy trae trae-cn qwen iflow minimax`。`--target all` 改为**只装到本机确实存在的 harness**（父目录存在才算），一个都没检测到时明确报错退出，而不是静默装到默认位置。
+- **`COMPATIBILITY.md`** 适配表重写：按国际/国内分组，明确标注"除 Claude Code 外均未逐个实测"，并给出通用验证判据（该 agent 的「设置 → 技能」里能否列出 `work-companion`）。
+
+### 验证
+
+- `install.sh --target all` 在本机实测：检测到 8 个 harness 目录，装进 6 个（claude-code / codex 已存在故跳过），未知目标正确报错并列出全部可用值。**测试产生的 6 处安装已全部清除**，本机只保留原有的 `~/.claude` 与 `~/.codex` 两份。
+- `install.ps1` 保持 ASCII-only（非 ASCII 行数 0）；`sh -n` 语法检查通过。PowerShell 的解析校验被执行策略拦下，**未绕过**，改为人工逐行核对。
+
+### 未做
+
+- 19 个目标中只有 Claude Code 真正验证过加载；其余按官方文档路径写入，**未验**该 agent 是否真的加载。
+- 仓库描述仍写着旧的"秘书型工作伴侣——记录承诺、主动小结、时机提醒"，与现行能力（不主动小结、不擅自定时）不符，需在 GitHub 仓库设置里手工改。
+
 ## [0.4.1] - 2026-11-16
 
 **评估驱动的三处小修：显性反问点、定时缺时刻、清单路径钉死。** `SKILL.md` 76 → 79 行。产品能力、五字段、五状态、四个动作都没有增删；改的全是"模型该在哪里停下来问"和"路径到底固不固定"。
